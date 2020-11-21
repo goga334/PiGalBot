@@ -1,6 +1,9 @@
 import sqlite3
 
-con = sqlite3.connect("bj_data_base.db")
+
+
+
+con = sqlite3.connect("pigalbot_data_base.db")
 cur = con.cursor()
 
 # number = '334'
@@ -8,13 +11,10 @@ cur = con.cursor()
 
 
 cur.execute("""CREATE TABLE IF NOT EXISTS   
-            bj_logs(
-            id TEXT, 
-            money INTEGER, 
-            stake INTEGER,
-            pl_taken_cards TEXT,
-            decks INTEGER,
-            cr_taken_cards TEXT
+            pigalbot_users(
+            id TEXT,
+            name TEXT, 
+            gallery TEXT
             )""")
 
 # sql = "DELETE FROM bj_logs WHERE id= '334'"
@@ -27,7 +27,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS
 
 
 print("Here's a listing of all the records in the table:")
-for row in cur.execute("SELECT rowid, * FROM bj_logs "):
+for row in cur.execute("SELECT rowid, * FROM pigalbot_users "):
     print(row)
 
 print(cur.fetchall())
