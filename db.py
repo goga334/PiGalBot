@@ -18,11 +18,25 @@ def get_gallery(user_id):
 
 
 
-def add(id, name):
+def add_user(id, name):
     con = sqlite3.connect("pigalbot_data_base.db")
     cur = con.cursor()
-    albums = [(id, name, 'new_gallery')]
-    cur.executemany("INSERT INTO pigalbot_users VALUES (?, ?, ?)", albums)
+    albums = [(id, name)]
+    cur.executemany("INSERT INTO pigalbot_users VALUES (?, ?)", albums)
+    con.commit()
+
+def add_gallery(id, gallery_name):
+    con = sqlite3.connect("pigalbot_data_base.db")
+    cur = con.cursor()
+    albums = [(gallery_name, id)]
+    cur.executemany("INSERT INTO pigalbot_galleries VALUES (?, ?)", albums)
+    con.commit()
+
+def add_pics(pic_id, gallery_id):
+    con = sqlite3.connect("pigalbot_data_base.db")
+    cur = con.cursor()
+    albums = [(pic_id, gallery_id)]
+    cur.executemany("INSERT INTO pigalbot_pics VALUES (?, ?)", albums)
     con.commit()
 
 def restart(user_id):
