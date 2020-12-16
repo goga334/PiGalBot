@@ -66,7 +66,7 @@ def bot_logic(message):
         options.add_argument("start-maximized");
         options.add_argument("disable-infobars")
         options.add_argument("--disable-extensions")
-        # options.add_argument('headless')
+        options.add_argument('headless')
         options.add_argument('window-size=1920x935')
         browser = webdriver.Chrome(options=options)
         browser.get('https://drive.google.com/drive/u/3/my-drive')
