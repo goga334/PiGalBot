@@ -44,15 +44,11 @@ def get_logs(message):
 def start(message):
     if db.get_id(str(message.from_user.id)) is None:
         db.add(str(message.from_user.id), str(message.from_user.first_name))
-        print('add')
-    else:
 
-        print('restart')
     bot.send_message(message.chat.id, "Вітаю, {0.first_name}!\nЯ - <b>{1.first_name}</b>, "
                                       "бот, у якому ви можете створювати власні галереї зображень "
                                       "та виставляти їх на сайті.".format(message.from_user, bot.get_me()),
                      parse_mode='html', reply_markup=markup1)
-    print('{0} has began to play'.format(message.from_user))
     print('has began to play' + str(message.from_user.id))
 
 
@@ -87,15 +83,14 @@ def show_gallery(id):
     f.close()
     bot.send_message(id, "Галерея: " + name)
     link = db.get_gallery(name)
-    print(link)
     for i in link:
-        print(i[0])
         bot.send_photo(id, i[0])
 
 
 @bot.message_handler(content_types=['text'])
 def bot_logic(message):
-
+    keyboard_add = types.InlineKeyboardMarkup()
+    keyboard_show = types.InlineKeyboardMarkup()
     if message.text[0] == '"':
 
         if message.text == '"Почати роботу"' or message.text == '"Це все!"':
@@ -110,14 +105,12 @@ def bot_logic(message):
         elif message.text == '"Додати фото"' or message.text == '"Ще"':
             list = db.gallery_list(message.from_user.id)
             for i in list:
-                print(i[0])
                 keyboard_add.add(types.InlineKeyboardButton(text=i[0], callback_data='a' + i[0]))
             bot.send_message(message.from_user.id, "Оберіть зі списку створених ", reply_markup=keyboard_add)
 
         elif message.text == '"Показати галерею"':
             list = db.gallery_list(message.from_user.id)
             for i in list:
-                print(i[0])
                 keyboard_show.add(types.InlineKeyboardButton(text=i[0], callback_data='s' + i[0]))
             bot.send_message(message.from_user.id, "Оберіть зі списку створених ", reply_markup=keyboard_show)
 
@@ -125,8 +118,6 @@ def bot_logic(message):
             bot.send_message(message.from_user.id, "Надсилайте мені фото. Надішліть команду /stop коли надішлете всі фото")
 
     else:
-        #keyboard_add.add(types.InlineKeyboardButton(text=message.text, callback_data='a' + message.text))
-        #keyboard_show.add(types.InlineKeyboardButton(text=message.text, callback_data='s' + message.text))
         bot.send_message(message.from_user.id, "Галерею створено. Її назва " + create_gal(message.from_user.id, message.text),
                          reply_markup=markup2)
 
@@ -138,7 +129,6 @@ def callback_worker(call):
     f = open('temp.txt', 'w')
     f.write(call.data)
     f.close()
-    #bot.send_message(call.message.chat.id, reply_markup=markup4)
     if (call.data[0] == 'a'):
         bot.send_message(call.message.chat.id, "Надсилайте мені фото. Надішліть команду /stop коли надішлете всі фото")
     if (call.data[0] == 's'):
