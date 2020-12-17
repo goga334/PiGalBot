@@ -1,8 +1,5 @@
 import sqlite3
 
-
-
-
 con = sqlite3.connect("pigalbot_data_base.db")
 cur = con.cursor()
 
@@ -12,20 +9,21 @@ cur = con.cursor()
 
 cur.execute("""CREATE TABLE IF NOT EXISTS   
             pigalbot_users(
-            id INT,
+            id TEXT,
             name TEXT
             )""")
 
 cur.execute("""CREATE TABLE IF NOT EXISTS   
             pigalbot_galleries(
-            gallery_name TEXT, 
-            user_id TEXT
+            id TEXT,
+            name TEXT
             )""")
 
 cur.execute("""CREATE TABLE IF NOT EXISTS   
             pigalbot_pics(
-            id TEXT, 
-            gallery_id TEXT
+            id TEXT,
+            gallery TEXT,
+            link TEXT
             )""")
 
 # sql = "DELETE FROM bj_logs WHERE id= '334'"
@@ -36,17 +34,25 @@ cur.execute("""CREATE TABLE IF NOT EXISTS
 # cur.executemany("INSERT INTO bj_logs VALUES (?,?,?,?,?,?)", albums)
 # con.commit()
 
-albums = [("first gallery", "374433247")]
-cur.executemany("INSERT INTO pigalbot_galleries VALUES (?,?)", albums)
-con.commit()
 
-print("Here's a listing of all the records in the table:")
+print("Here's a listing of all the records in the pigalbot_users:")
 for row in cur.execute("SELECT rowid, * FROM pigalbot_users "):
     print(row)
+
+print(cur.fetchall())
+
+print("Here's a listing of all the records in the pigalbot_galleries:")
 for row in cur.execute("SELECT rowid, * FROM pigalbot_galleries "):
     print(row)
+
+print(cur.fetchall())
+
+print("Here's a listing of all the records in the pigalbot_pics:")
 for row in cur.execute("SELECT rowid, * FROM pigalbot_pics "):
     print(row)
+
+
+
 
 print(cur.fetchall())
 
