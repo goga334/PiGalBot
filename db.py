@@ -19,6 +19,16 @@ def gallery_list(id):
     return result
 
 
+def check_gallery(gal_name):
+    result = []
+    con = sqlite3.connect("pigalbot_data_base.db")
+    cur = con.cursor()
+    sql = "SELECT name FROM pigalbot_galleries WHERE name=?"
+    for row in cur.execute(sql, [gal_name]):
+        result.append(row)
+    return result
+
+
 def get_gallery(gal_name):
     result = []
     con = sqlite3.connect("pigalbot_data_base.db")
@@ -37,11 +47,27 @@ def add_gallery(id, name):
     con.commit()
 
 
-def add_pics(id, name, new_gallery):
+def add_pics(id, name, link):
     con = sqlite3.connect("pigalbot_data_base.db")
     cur = con.cursor()
-    albums = [(id, name, new_gallery)]
+    albums = [(id, name, link)]
     cur.executemany("INSERT INTO pigalbot_pics VALUES (?, ?, ?)", albums)
+    con.commit()
+
+
+def delete_gallery(name):
+    con = sqlite3.connect("pigalbot_data_base.db")
+    cur = con.cursor()
+    albums = [(name,)]
+    cur.executemany("DELETE FROM pigalbot_galleries WHERE name=?", albums)
+    con.commit()
+
+
+def delete_pics(link):
+    con = sqlite3.connect("pigalbot_data_base.db")
+    cur = con.cursor()
+    albums = [(link,)]
+    cur.executemany("DELETE FROM pigalbot_pics WHERE link=?", albums)
     con.commit()
 
 
